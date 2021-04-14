@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 const app = express();
 
 app.use(cors());
+
 app.use(express.json());
 
 const users = [];
@@ -57,6 +58,7 @@ app.post('/todos', checksExistsUserAccount, (request, response) => {
   const { user } = request;
   const { title, deadline } = request.body;
 
+  //Adicionando novo TODO na Lista.
   const addNewTodo = {
     id: uuidv4(),
     title,
@@ -81,6 +83,7 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
     return response.status(404).json({error: 'Todo not found'});
   }
 
+  //Fazendo troca de titulo e data no todo existente.
   todo.title = title;
   todo.deadline = new Date(deadline);
   
@@ -97,6 +100,7 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
     return response.status(404).json({error: 'Todo not found'});
   }
 
+  //Marcando um TODO como feito.
   todo.done = true;
 
   return response.json(todo);
@@ -112,6 +116,7 @@ app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
     return response.status(404).json({error: 'Todo not found'});
   }
 
+  //Deletando um todo da lista.
   user.todos.splice(todoIndex, 1);
 
   return response.status(204).json();  
